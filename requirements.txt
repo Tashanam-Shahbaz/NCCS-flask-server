@@ -1,6 +1,5 @@
 flask
 firebase-admin
-tensorflow
 retinaface
 pyngrok
 flask_ngrok
