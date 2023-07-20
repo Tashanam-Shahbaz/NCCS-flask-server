@@ -3,7 +3,7 @@ from saimese import compare_found_missing_faces_optimized
 
 app = Flask(__name__)
 
-
+print("hello")
 @app.route('/process', methods=['GET'])
 def process_form():
     # Get form data from URL
