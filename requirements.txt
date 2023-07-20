@@ -1,4 +1,3 @@
-tensorflow==6.11.0
 torch>=1.4
 scipy
 ftfy
