@@ -1,5 +1,10 @@
-flask
+tensorflow==6.11.0
+torch>=1.4
+scipy
+ftfy
+accelerate
+pyngrok==4.1.1
+flask_ngrok
 firebase-admin
-retinaface
 pyngrok
 flask_ngrok

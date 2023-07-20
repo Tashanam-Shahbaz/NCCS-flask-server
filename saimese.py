@@ -26,7 +26,7 @@ def contrastive_loss(y_true, y_pred):
 
 # # Register the custom loss function
 tf.keras.utils.get_custom_objects()['contrastive_loss'] = contrastive_loss
-model = tf.keras.models.load_model("./zainab_alert/weights/siam-face-recognition.h5",custom_objects={'contrastive_loss': contrastive_loss})
+model = tf.keras.models.load_model("./siam-face-recognition.h5",custom_objects={'contrastive_loss': contrastive_loss})
 
 def url_to_image(url):
 
