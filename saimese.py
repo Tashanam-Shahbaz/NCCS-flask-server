@@ -22,8 +22,11 @@ def contrastive_loss(y_true, y_pred):
     return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
 
 # # Register the custom loss function
+# model = tf.keras.models.load_model("facenet_keras.h5")
+# model.load_weights("facenet_keras_weights.h5")
+
 tf.keras.utils.get_custom_objects()['contrastive_loss'] = contrastive_loss
-my_model = tf.keras.models.load_model("./siam-face-recognition-046.h5",custom_objects={'contrastive_loss': contrastive_loss})
+my_model = tf.keras.models.load_model("./sfr.h5",custom_objects={'contrastive_loss': contrastive_loss})
 
 # my_model=siamese_model_func()
 
