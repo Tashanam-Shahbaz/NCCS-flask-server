@@ -43,7 +43,7 @@ def preprocess_image(image):
     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     gray_face = face_cascade.detectMultiScale(gray_img, scaleFactor=1.3, minNeighbors=5, minSize=(5, 5))
     (x, y, w, h) = gray_face[0]
-    face_img = img[y:y+h, x:x+w]
+    face_img = gray_face[0][y:y+h, x:x+w]
     print(face_img)
     img = cv2.resize(face_img, (160, 160))
     img = np.array(img, dtype=np.float64)
