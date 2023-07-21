@@ -38,12 +38,12 @@ def url_to_image(url):
     except Exception as e:
         return None  # return None if an error occurs during image decoding
 
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 def preprocess_image(image):
-
-    faces = RetinaFace.extract_faces(img_path=image, align=True)
-    rgb_align_face = faces[0][:, :, ::-1]
-    gray_face = cv2.cvtColor(rgb_align_face, cv2.COLOR_BGR2GRAY)
-    img = cv2.resize(gray_face, (160, 160))
+    
+    gray_face = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray_face = face_cascade.detectMultiScale(gray_face, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+    img = cv2.resize(gray_face[0], (160, 160))
     img = np.array(img, dtype=np.float64)
     img /= 255
     img = img[..., np.newaxis]

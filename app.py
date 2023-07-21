@@ -1,7 +1,9 @@
 from flask import Flask, request
 from saimese import compare_found_missing_faces_optimized
+from flask_ngrok import run_with_ngrok
 
 app = Flask(__name__)
+run_with_ngrok(app)
 
 print("hello")
 @app.route('/process', methods=['GET'])
