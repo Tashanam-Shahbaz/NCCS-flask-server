@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from urllib import request
-# from retinaface import RetinaFace
+from retinaface import RetinaFace
 from tensorflow.keras import backend as K
 import datetime
 from datetime import timedelta

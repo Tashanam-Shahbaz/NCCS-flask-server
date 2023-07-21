@@ -7,3 +7,4 @@ flask_ngrok
 firebase-admin
 pyngrok
 flask_ngrok
+retinaface
