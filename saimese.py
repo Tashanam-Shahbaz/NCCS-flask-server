@@ -26,7 +26,7 @@ def contrastive_loss(y_true, y_pred):
 
 # # Register the custom loss function
 tf.keras.utils.get_custom_objects()['contrastive_loss'] = contrastive_loss
-model = tf.keras.models.load_model("./siam-face-recognition (1).h5",custom_objects={'contrastive_loss': contrastive_loss})
+model = tf.keras.models.load_model("./siam-face-recognition_1.h5",custom_objects={'contrastive_loss': contrastive_loss})
 
 def url_to_image(url):
 
@@ -54,7 +54,7 @@ def saimese_pairs(url_1,url_2):
     image_test = url_to_image(url_2)
     
     if (image is None) or (image_test is None):
-        return (False, 1)    
+        return (False, 1)    \
     
     pairs = [np.zeros((1, 160, 160, 1)) for _ in range(2)]
     pairs[0][0, :, :, :] = preprocess_image(image)
