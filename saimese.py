@@ -6,7 +6,7 @@ from urllib import request
 from tensorflow.keras import backend as K
 import datetime
 from datetime import timedelta
-
+from saimese_nw import siamese_model_func
 from firebase_admin import initialize_app,credentials,storage, db
 cred = credentials.Certificate("./zainab-alert025-key.json")
 
@@ -25,9 +25,9 @@ def contrastive_loss(y_true, y_pred):
     return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
 
 # # Register the custom loss function
-tf.keras.utils.get_custom_objects()['contrastive_loss'] = contrastive_loss
-model = tf.keras.models.load_model("./siam-face-recognition_1.h5",custom_objects={'contrastive_loss': contrastive_loss})
-
+# tf.keras.utils.get_custom_objects()['contrastive_loss'] = contrastive_loss
+# model = tf.keras.models.load_model("./siam-face-recognition_1.h5",custom_objects={'contrastive_loss': contrastive_loss})
+my_model=siamese_model_func()
 def url_to_image(url):
 
     resp = request.urlopen(url)  # download the image from the URL
@@ -81,7 +81,7 @@ def compare_found_missing_faces_optimized(found_id):
                         timedelta(seconds=10000), method='GET')
 
             pairs = saimese_pairs(image_url_1, image_url_2)
-            dist =model.predict([pairs[0], pairs[1]])[0][0]
+            dist =my_model.predict([pairs[0], pairs[1]])[0][0]
             results.append((child_missing_id,image_url_2, dist))
 
     results.sort(key=lambda x: x[2])   
