@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from urllib import request
-from retinaface import RetinaFace
 from tensorflow.keras import backend as K
 import datetime
 from datetime import timedelta
@@ -41,9 +40,12 @@ def url_to_image(url):
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 def preprocess_image(image):
     
-    gray_face = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    gray_face = face_cascade.detectMultiScale(gray_face, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-    img = cv2.resize(gray_face[0], (160, 160))
+    gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray_face = face_cascade.detectMultiScale(gray_img, scaleFactor=1.3, minNeighbors=5, minSize=(5, 5))
+    (x, y, w, h) = gray_face[0]
+    face_img = img[y:y+h, x:x+w]
+    print(face_img)
+    img = cv2.resize(face_img, (160, 160))
     img = np.array(img, dtype=np.float64)
     img /= 255
     img = img[..., np.newaxis]
