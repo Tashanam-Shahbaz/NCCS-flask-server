@@ -18,7 +18,7 @@ def compare_found_missing_faces_optimized(found_id):
     
     bucket = storage.bucket(app=firebase_app)
 
-    results = []
+    
     dic = {"ChildFound": [], "ChildMissing":[]}
     
     data_child_found = db.reference('ChildFoundInfo/'+found_id).get()
@@ -34,7 +34,8 @@ def compare_found_missing_faces_optimized(found_id):
         preprocess_image_array = preprocess_image(image_array)
         if preprocess_image_array is None:
             continue
-
+        
+        results = []
         for child_missing_id, data_child_missing in data_childern_missing.items():
             print("data_child_missing",data_child_missing)
             for path in data_child_missing['imagePath']:
@@ -84,9 +85,15 @@ def process_video_and_upload_faces(found_id, remote_img_count):
 
             face_capture_from_video(local_video_path, temp_image_dir, video_count, remote_img_count)
 
-        for i in os.listdir(temp_image_dir):
+        lst_images=os.listdir(temp_image_dir)
+        
+        db_ref = db.reference('/ChildFoundInfo/'+found_id)
+        remote_image_lst=["ChildFound/Image" + found_id + "/" + filename for filename in lst_images]
+        db_ref.child("imagePath").set(remote_image_lst)
+        
+        for i in lst_images:
             local_file_path = f"{temp_image_dir}/{i}"
-            remote_file_path = f"ChildFound/Video/{found_id}/Extracted_Images/{i}"
+            remote_file_path = f"ChildFound/Image/{found_id}/{i}"
 
             image_blob = bucket.blob(remote_file_path)
             image_blob.upload_from_filename(local_file_path)
