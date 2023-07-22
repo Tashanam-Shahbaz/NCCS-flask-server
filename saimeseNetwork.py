@@ -1,9 +1,10 @@
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D,  Input, Dropout
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import MaxPooling2D
-from tensorflow.keras.layers import Lambda, Flatten, Dense
 from tensorflow.keras import backend as K
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import Conv2D,  Input, Dropout
+from tensorflow.keras.layers import Lambda, Flatten, Dense
+
 
 
 def euclidean_distance(vects):
@@ -42,7 +43,7 @@ def create_base_network(input_shape):
     
     return seq
 
-def siamese_model_func():
+def siamese_model():
     input_shape=(160, 160, 1)
 
     # network definition
