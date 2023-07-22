@@ -88,7 +88,7 @@ def process_video_and_upload_faces(found_id, remote_img_count):
         lst_images=os.listdir(temp_image_dir)
         
         db_ref = db.reference('/ChildFoundInfo/'+found_id)
-        remote_image_lst=["ChildFound/Image" + found_id + "/" + filename for filename in lst_images]
+        remote_image_lst=["ChildFound/Image/" + found_id + "/" + filename for filename in lst_images]
         db_ref.child("imagePath").set(remote_image_lst)
         
         for i in lst_images:

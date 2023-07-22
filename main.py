@@ -21,7 +21,7 @@ def view_compare_found_missing_faces_optimized():
     return result
 
 @app.route('/result_video', methods=['GET'])
-def view_process_video_upload_and_compare_faces(request):
+def view_process_video_upload_and_compare_faces():
 
     # http://127.0.0.1:8000/result/?url_1=ali-found-ID&remote_img_count=5
     child_found_id = request.args.get('url_1', '')

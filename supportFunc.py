@@ -71,7 +71,7 @@ def face_capture_from_video(video_path, output_dir, video_count, image_count=5):
 
             print(face_img)
             cv2.imwrite(
-                f'{output_dir}/face_{video_count}_{count}.jpg', face_img)
+                f'{output_dir}/face_{video_count}_{count}.jpeg', face_img)
             count += 1
         else:
             pass
