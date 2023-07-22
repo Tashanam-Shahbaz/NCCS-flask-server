@@ -47,16 +47,33 @@ def compare_found_missing_faces_optimized(found_id):
 
                 dist = main_model.predict([pairs[0], pairs[1]])[0][0]
                 results.append((child_missing_id,image_url_2, dist))
-
+        
         results.sort(key=lambda x: x[2])   
 
         data_child_found["images_path"] = [image_url_1]    
-        dic["ChildFound"].append({found_id: data_child_found})    
+        dic["ChildFound"].append({found_id: data_child_found}) 
 
-        missing_id = results[0][0]
-        data_child_missing = data_childern_missing[missing_id]
+        data_child_found["images_path"] = [image_url_1]    
+        dic["ChildFound"].append({found_id: data_child_found})   
+
+        data_child_found["images_path"] = [image_url_1]    
+        dic["ChildFound"].append({found_id: data_child_found})      
+
+        missing_id_1 = results[0][0]
+        data_child_missing = data_childern_missing[missing_id_1]
         data_child_missing["images_path"] = [results[0][1]] 
-        dic["ChildMissing"].append({missing_id: data_child_missing})
+        dic["ChildMissing"].append({missing_id_1: data_child_missing})
+
+        missing_id_2 = results[1][0]
+        data_child_missing = data_childern_missing[missing_id_2]
+        data_child_missing["images_path"] = [results[0][1]] 
+        dic["ChildMissing"].append({missing_id_2: data_child_missing})
+
+        missing_id_3 = results[2][0]
+        data_child_missing = data_childern_missing[missing_id_3]
+        data_child_missing["images_path"] = [results[0][1]] 
+        dic["ChildMissing"].append({missing_id_3: data_child_missing})
+        
     print("END",dic )
     return dic
 
