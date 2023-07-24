@@ -21,7 +21,7 @@ def view_compare_found_missing_faces_optimized():
     return result
 
 @app.route('/compare_face_all', methods=['GET'])
-def compare_found_missing_faces_all_optimized():
+def view_compare_found_missing_faces_all_optimized():
     # Process the form data
     start= time.time()
     result = compare_found_missing_faces_all_optimized()
