@@ -19,10 +19,13 @@ def url_to_image(url):
 def preprocess_image(image):   
     
     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    gray_face = face_cascade.detectMultiScale(gray_img, scaleFactor=1.3, minNeighbors=5, minSize=(5, 5))
-    
+    try:
+        gray_face = face_cascade.detectMultiScale(gray_img, scaleFactor=1.3, minNeighbors=5, minSize=(5, 5))
+    except:
+        return None
+
     if gray_face == ():
-      return None
+        return None
     
     (x, y, w, h) = gray_face[0]
     face_img = gray_img[y:y+h, x:x+w]
