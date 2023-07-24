@@ -9,12 +9,12 @@ run_with_ngrok(app)
 @app.route('/compare_face', methods=['GET'])
 def view_compare_found_missing_faces_optimized():
     # Get form data from URL
-    child_found_id = request.args.get('url_1', '')
-    print(child_found_id)
+    # child_found_id = request.args.get('url_1', '')
+    # print(child_found_id)
     
     # Process the form data
     start= time.time()
-    result = compare_found_missing_faces_optimized(child_found_id)
+    result = compare_found_missing_faces_optimized()
     end= time.time()
     print("End-View: TIME: ", end - start)
 
