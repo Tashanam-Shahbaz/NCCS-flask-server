@@ -21,8 +21,9 @@ def preprocess_image(image):
     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     try:
         gray_face = face_cascade.detectMultiScale(gray_img, scaleFactor=1.3, minNeighbors=5, minSize=(5, 5))
-    except:
-        return None
+    except Exception as e:
+      print(e)
+      return None
 
     if gray_face == ():
         return None
@@ -42,13 +43,16 @@ def saimese_pairs(url_2):
     image_test = url_to_image(url_2)
     
     if image_test is None:
-        return (False, 1)  
+        return None
     
     img_w,img_h=160,160
     pairs = [np.zeros((1,img_w,img_h, 1)) for _ in range(2)]
 
     # pairs[0][0, :, :, :] = preprocess_image(image)
-    pairs[1][0, :, :, :] = preprocess_image(image_test)
+    temp =preprocess_image(image_test)
+    if temp is None:
+       return None  
+    pairs[1][0, :, :, :] = temp
     return pairs
 
 
