@@ -9,9 +9,19 @@ run_with_ngrok(app)
 @app.route('/compare_face', methods=['GET'])
 def view_compare_found_missing_faces_optimized():
     # Get form data from URL
-    # child_found_id = request.args.get('url_1', '')
-    # print(child_found_id)
+    child_found_id = request.args.get('url_1', '')
+    print(child_found_id)
     
+    # Process the form data
+    start= time.time()
+    result = compare_found_missing_faces_optimized(child_found_id)
+    end= time.time()
+    print("End-View: TIME: ", end - start)
+
+    return result
+
+@app.route('/compare_face_all', methods=['GET'])
+def compare_found_missing_faces_all_optimized():
     # Process the form data
     start= time.time()
     result = compare_found_missing_faces_optimized()
@@ -19,6 +29,7 @@ def view_compare_found_missing_faces_optimized():
     print("End-View: TIME: ", end - start)
 
     return result
+
 
 @app.route('/result_video', methods=['GET'])
 def view_process_video_upload_faces():
