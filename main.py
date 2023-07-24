@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_ngrok import run_with_ngrok
-from compareFaceRecog import compare_found_missing_faces_optimized,process_video_and_upload_faces
+from compareFaceRecog import compare_found_missing_faces_optimized,process_video_and_upload_faces,compare_found_missing_faces_all_optimized
 import time
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ def view_compare_found_missing_faces_optimized():
 def compare_found_missing_faces_all_optimized():
     # Process the form data
     start= time.time()
-    result = compare_found_missing_faces_optimized()
+    result = compare_found_missing_faces_all_optimized()
     end= time.time()
     print("End-View: TIME: ", end - start)
 
