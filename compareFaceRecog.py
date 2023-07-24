@@ -96,6 +96,8 @@ def compare_found_missing_faces_all_optimized():
                                         timedelta(seconds=10000), method='GET')
 
                             pairs = saimese_pairs(image_url_2)
+                            if pairs is None:
+                                continue
                             pairs[0][0, :, :, :] = preprocess_image_array
 
                             dist = main_model.predict([pairs[0], pairs[1]])[0][0]
