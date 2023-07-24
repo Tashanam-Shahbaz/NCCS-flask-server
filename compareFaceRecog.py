@@ -33,8 +33,8 @@ def compare_found_missing_faces_optimized(found_id):
             continue
         preprocess_image_array = preprocess_image(image_array)
         if preprocess_image_array is None:
+            print("preprocess_image_array",preprocess_image_array)
             continue
-
         results = []
         for child_missing_id, data_child_missing in data_childern_missing.items():
             print("data_child_missing",data_child_missing)
@@ -43,6 +43,10 @@ def compare_found_missing_faces_optimized(found_id):
                             timedelta(seconds=10000), method='GET')
 
                 pairs = saimese_pairs(image_url_2)
+                if pairs is None:
+                  print("pairs",pairs)  
+                  continue
+                
                 pairs[0][0, :, :, :] = preprocess_image_array
 
                 dist = main_model.predict([pairs[0], pairs[1]])[0][0]
