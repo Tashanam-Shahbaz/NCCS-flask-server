@@ -93,7 +93,7 @@ def compare_found_missing_faces_all_optimized():
                 results = []
                 for child_missing_id, data_child_missing in data_childern_missing.items():
                     print("data_child_missing",data_child_missing)
-                    if 'imagePath' in data_child_found:
+                    if 'imagePath' in data_child_missing:
                         for path in data_child_missing['imagePath']:
                             image_url_2 = bucket.blob(path).generate_signed_url(
                                         timedelta(seconds=10000), method='GET')
