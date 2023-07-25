@@ -6,7 +6,6 @@ from tensorflow.keras.layers import Conv2D,  Input, Dropout
 from tensorflow.keras.layers import Lambda, Flatten, Dense
 from numba import jit,cuda
 
-@jit(target_backend='cuda')
 def euclidean_distance(vects):
     '''Compute Euclidean Distance between two vectors'''
     x, y = vects
