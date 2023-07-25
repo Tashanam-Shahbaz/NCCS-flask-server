@@ -6,6 +6,7 @@ from firebase_admin import initialize_app,credentials,storage, db
 
 from saimeseNetwork import siamese_model
 from supportFunc import url_to_image,preprocess_image,saimese_pairs,face_capture_from_video
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 cred = credentials.Certificate("./firebaseConnection/zainab-alert025-key.json")
 firebase_app = initialize_app(
@@ -172,3 +173,24 @@ def process_video_and_upload_faces(child_id, remote_img_count):
         shutil.rmtree(temp_video_dir, ignore_errors=True)
 
     return {"Success": True}
+
+
+# PARALLEL PROCESSING
+
+# def compare_images_parallel(preprocess_image_array, data_child_missing, bucket, results):
+#     with ThreadPoolExecutor() as executor:
+#         futures = [executor.submit(compare_image_distance, preprocess_image_array, path, bucket) 
+#                    for path in data_child_missing['imagePath']]
+#         for future in as_completed(futures):
+#             result = future.result()
+#             if result is not None:
+#                 results.append(result)
+
+# def compare_image_distance(preprocess_image_array, path, bucket):
+#     image_url_2 = bucket.blob(path).generate_signed_url(timedelta(seconds=10000), method='GET')
+#     pairs = saimese_pairs(image_url_2)
+#     if pairs is not None:
+#         pairs[0][0, :, :, :] = preprocess_image_array
+#         dist = main_model.predict([pairs[0], pairs[1]])[0][0]
+#         return (child_missing_id, image_url_2, dist)
+#     return None

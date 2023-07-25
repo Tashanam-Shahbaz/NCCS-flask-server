@@ -1,6 +1,7 @@
 torch>=1.4
 scipy
 ftfy
+numba
 accelerate
 pyngrok==4.1.1
 flask_ngrok
