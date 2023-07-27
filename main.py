@@ -24,9 +24,11 @@ def view_compare_found_missing_faces_optimized():
 
     return result
 
-@app.route('/compare_face_all', methods=['GET'])
+@app.route('/compare_face_all', methods=['GET','POST'])
 def view_compare_found_missing_faces_all_optimized():
     # Process the form data
+    child_id = request.args.get('url_1', '')
+    print("Argument",child_id)
     start= time.time()
     result = compare_found_missing_faces_all_optimized()
     end= time.time()
