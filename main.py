@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_ngrok import run_with_ngrok
-from compareFaceRecog import compare_found_missing_faces_optimized,process_video_and_upload_faces,compare_found_missing_faces_all_optimized
+from compareFaceRecog import compare_found_missing_faces_optimized,process_video_and_upload_faces,compare_found_missing_faces_all_optimized,compare_found_missing_faces_2_optimized
 import time
 
 app = Flask(__name__)
@@ -9,12 +9,16 @@ run_with_ngrok(app)
 @app.route('/compare_face', methods=['GET'])
 def view_compare_found_missing_faces_optimized():
     # Get form data from URL
-    child_found_id = request.args.get('url_1', '')
-    print(child_found_id)
+    child_id = request.args.get('url_1', '')
+    print(child_id)
+    Id_type=child_id.split("-")[1]
     
     # Process the form data
     start= time.time()
-    result = compare_found_missing_faces_optimized(child_found_id)
+    if Id_type == "Found":
+        result = compare_found_missing_faces_optimized(child_id)
+    elif Id_type == "Missing":
+        result = compare_found_missing_faces_2_optimized(child_id)
     end= time.time()
     print("End-View: TIME: ", end - start)
 

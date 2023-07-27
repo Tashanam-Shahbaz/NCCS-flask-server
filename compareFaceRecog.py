@@ -70,6 +70,61 @@ def compare_found_missing_faces_optimized(found_id):
     print("END", dic)
     return dic
 
+
+def compare_found_missing_faces_2_optimized(missing_id):
+
+    bucket = storage.bucket(app=firebase_app)
+
+    dic = {"ChildFound": [], "ChildMissing":[]}
+
+    data_child_missing = db.reference('ChildMissingInfo/'+missing_id).get()
+    data_childern_found=db.reference('ChildFoundInfo/').get()
+
+    if data_child_missing is not None and data_childern_found is not None and 'imagePath' in data_child_missing:
+        for imgPath in data_child_missing['imagePath']: 
+            image_url_1 = bucket.blob(imgPath).generate_signed_url(
+                        timedelta(seconds=10000), method='GET')
+
+            image_array=url_to_image(image_url_1)
+            if image_array is None:
+                print("image_array",imgPath,image_url_1)
+                continue
+            preprocess_image_array = preprocess_image(image_array)
+            if preprocess_image_array is None:
+                print("preprocess_image_array",preprocess_image_array)
+                continue
+            results = []
+            for child_found_id, data_child_found in data_childern_found.items():
+                print("data_child_found",data_child_found)
+                if 'imagePath' in data_child_found:
+                    for path in data_child_found['imagePath']:
+                        image_url_2 = bucket.blob(path).generate_signed_url(
+                                    timedelta(seconds=10000), method='GET')
+
+                        pairs = saimese_pairs(image_url_2)
+                        if pairs is None:
+                            print("pairs",pairs)  
+                            continue
+                        
+                        pairs[0][0, :, :, :] = preprocess_image_array
+
+                        dist = main_model.predict([pairs[0], pairs[1]])[0][0]
+                        results.append((child_found_id,image_url_2, dist))
+
+            results.sort(key=lambda x: x[2])   
+            print("RESULts ",results)
+            for i in range(3):
+                found_id = results[i][0]
+                data_child_found = data_childern_found[found_id]
+                data_child_found["images_path"] = [results[i][1]]
+                dic["ChildFound"].append({found_id: data_child_found})
+
+                data_child_missing["images_path"] = [image_url_1]
+                dic["ChildFound"].append({missing_id: data_child_missing})
+
+    print("END", dic)
+    return dic
+
 def compare_found_missing_faces_all_optimized():
     
     bucket = storage.bucket(app=firebase_app)
@@ -118,7 +173,7 @@ def compare_found_missing_faces_all_optimized():
                     data_child_found["images_path"] = [image_url_1]
                     dic["ChildFound"].append({child_found_id: data_child_found})
 
-    print("END", dic)
+    print("END - compare_found_missing_faces_all_optimized ", dic)
     return dic
 
 
