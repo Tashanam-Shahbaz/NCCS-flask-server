@@ -29,6 +29,8 @@ def view_compare_found_missing_faces_all_optimized():
     child_id = request.args.get('url_1', '')
     print(child_id)
     # Process the form data
+    child_id = request.args.get('url_1', '')
+    print("Argument",child_id)
     start= time.time()
     result = compare_found_missing_faces_all_optimized()
     end= time.time()
