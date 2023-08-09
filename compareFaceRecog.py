@@ -57,6 +57,11 @@ def compare_found_missing_faces_optimized(found_id):
                         results.append((child_missing_id,image_url_2, dist))
 
             results.sort(key=lambda x: x[2])
+            if results[0][2]<0.01:
+                data_child_found["images_path"] = [image_url_1]
+                dic["ChildFound"].append({found_id: data_child_found})
+                print("No Match Found.\nResult",results)
+                return dic
 
             
             print("RESULts ",results)
