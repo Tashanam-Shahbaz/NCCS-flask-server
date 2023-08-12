@@ -58,8 +58,8 @@ def compare_found_missing_faces_optimized(found_id):
 
             results.sort(key=lambda x: x[2])
             if results[0][2]>0.3:
-                data_child_found["images_path"] = [image_url_1]
-                dic["ChildFound"].append({found_id: data_child_found})
+                # data_child_found["images_path"] = [image_url_1]
+                # dic["ChildFound"].append({found_id: data_child_found})
                 print("No Match Found.\nResult",results)
                 return dic
 
@@ -120,8 +120,8 @@ def compare_found_missing_faces_2_optimized(missing_id):
 
             results.sort(key=lambda x: x[2])   
             if results[0][2]>0.3:
-                data_child_missing["images_path"] = [image_url_1]
-                dic["ChildFound"].append({missing_id: data_child_missing})
+                # data_child_missing["images_path"] = [image_url_1]
+                # dic["ChildFound"].append({missing_id: data_child_missing})
                 print("No Match Found.\nResult",results)
                 return dic
             print("RESULts ",results)
@@ -175,6 +175,8 @@ def compare_found_missing_faces_all_optimized():
                             results.append((child_missing_id,image_url_2, dist))
                     
                 results.sort(key=lambda x: x[2])
+                # if results[0][2]>0.3:
+                #     continue
 
                 for i in range(3):
                     missing_id = results[i][0]
@@ -244,20 +246,70 @@ def process_video_and_upload_faces(child_id, remote_img_count):
 
 # PARALLEL PROCESSING
 
-# def compare_images_parallel(preprocess_image_array, data_child_missing, bucket, results):
-#     with ThreadPoolExecutor() as executor:
-#         futures = [executor.submit(compare_image_distance, preprocess_image_array, path, bucket) 
-#                    for path in data_child_missing['imagePath']]
-#         for future in as_completed(futures):
-#             result = future.result()
-#             if result is not None:
-#                 results.append(result)
+# from multiprocessing import Pool
 
-# def compare_image_distance(preprocess_image_array, path, bucket):
+# def process_missing_child(args):
+#     child_missing_id, data_child_missing, preprocess_image_array = args
+
+#     bucket = storage.bucket(app=firebase_app)
 #     image_url_2 = bucket.blob(path).generate_signed_url(timedelta(seconds=10000), method='GET')
+
 #     pairs = saimese_pairs(image_url_2)
-#     if pairs is not None:
-#         pairs[0][0, :, :, :] = preprocess_image_array
-#         dist = main_model.predict([pairs[0], pairs[1]])[0][0]
-#         return (child_missing_id, image_url_2, dist)
-#     return None
+#     if pairs is None:
+#         print("pairs", pairs)
+#         return None
+
+#     pairs[0][0, :, :, :] = preprocess_image_array
+
+#     dist = main_model.predict([pairs[0], pairs[1]])[0][0]
+#     return (child_missing_id, image_url_2, dist)
+
+# def compare_found_missing_faces_optimized(found_id):
+#     bucket = storage.bucket(app=firebase_app)
+#     dic = {"ChildFound": [], "ChildMissing": []}
+
+#     data_child_found = db.reference('ChildFoundInfo/' + found_id).get()
+#     data_childern_missing = db.reference('ChildMissingInfo/').get()
+
+#     if data_child_found is not None and data_childern_missing is not None and 'imagePath' in data_child_found:
+#         for imgPath in data_child_found['imagePath']:
+#             image_url_1 = bucket.blob(imgPath).generate_signed_url(timedelta(seconds=10000), method='GET')
+
+#             image_array = url_to_image(image_url_1)
+#             if image_array is None:
+#                 print("image_array", imgPath, image_url_1)
+#                 continue
+#             preprocess_image_array = preprocess_image(image_array)
+#             if preprocess_image_array is None:
+#                 print("preprocess_image_array", preprocess_image_array)
+#                 continue
+
+#             args_list = []
+#             for child_missing_id, data_child_missing in data_childern_missing.items():
+#                 if 'imagePath' in data_child_missing:
+#                     args_list.append((child_missing_id, data_child_missing, preprocess_image_array))
+
+#             with Pool(processes=4) as pool:  # Adjust the number of processes as needed
+#                 results = pool.map(process_missing_child, args_list)
+
+#             results = [result for result in results if result is not None]
+#             results.sort(key=lambda x: x[2])
+            
+#             if results and results[0][2] > 0.3:
+#                 data_child_found["images_path"] = [image_url_1]
+#                 dic["ChildFound"].append({found_id: data_child_found})
+#                 print("No Match Found.\nResult", results)
+#                 return dic
+
+#             print("RESULts ", results)
+#             for i in range(min(3, len(results))):
+#                 missing_id = results[i][0]
+#                 data_child_missing = data_childern_missing[missing_id]
+#                 data_child_missing["images_path"] = [results[i][1]]
+#                 dic["ChildMissing"].append({missing_id: data_child_missing})
+
+#             data_child_found["images_path"] = [image_url_1]
+#             dic["ChildFound"].append({found_id: data_child_found})
+
+#     print("END", dic)
+#     return dic
