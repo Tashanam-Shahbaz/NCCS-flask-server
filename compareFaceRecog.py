@@ -212,7 +212,7 @@ def process_video_and_upload_faces(child_id, remote_img_count):
 
             blob = bucket.blob(remote_video_path)
             blob.download_to_filename(local_video_path)
-            # blob.delete()
+            blob.delete()
 
             face_capture_from_video(local_video_path, temp_image_dir, video_count, remote_img_count)
 
