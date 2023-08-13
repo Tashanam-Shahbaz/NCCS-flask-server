@@ -64,7 +64,7 @@ def compare_found_missing_faces_optimized(found_id):
                 return dic
 
             
-            print("RESULts ",results)
+            print("RESULT ",results)
             for i in range(3):
                 missing_id = results[i][0]
                 data_child_missing = data_childern_missing[missing_id]
@@ -124,7 +124,7 @@ def compare_found_missing_faces_2_optimized(missing_id):
                 # dic["ChildFound"].append({missing_id: data_child_missing})
                 print("No Match Found.\nResult",results)
                 return dic
-            print("RESULts ",results)
+            print("RESULT ",results)
             for i in range(3):
                 found_id = results[i][0]
                 data_child_found = data_childern_found[found_id]
@@ -132,7 +132,7 @@ def compare_found_missing_faces_2_optimized(missing_id):
                 dic["ChildFound"].append({found_id: data_child_found})
 
                 data_child_missing["images_path"] = [image_url_1]
-                dic["ChildFound"].append({missing_id: data_child_missing})
+                dic["ChildMissing"].append({missing_id: data_child_missing})    
 
     print("END", dic)
     return dic
