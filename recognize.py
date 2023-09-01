@@ -8,16 +8,15 @@ import face_recognition
 import os
 from typing import Tuple,Optional,Union
 
-def url_to_image(url: str) -> Optional[np.ndarray]:
-
-    resp = request.urlopen(url)  # download the image from the URL
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")  # convert the image to a NumPy array
+def url_to_image(url):  # download the image, convert it to a NumPy array, and then read it into OpenCV format
     try:
+        resp = request.urlopen(url)  # download the image from the URL
+        image = np.asarray(bytearray(resp.read()), dtype="uint8")  # convert the image to a NumPy array
         image = cv2.imdecode(image, cv2.IMREAD_COLOR)  # read the image into OpenCV format
         return image
     except Exception as e:
         return None  # return None if an error occurs during image decoding
-    
+
 def my_face_recognition(image, image_test):
     # Can use for local images
     # image = face_recognition.load_image_file(url_1)
