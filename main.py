@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_ngrok import run_with_ngrok
-from compareFaceRecog import compare_found_missing_faces_optimized,process_video_and_upload_faces,compare_found_missing_faces_all_optimized,compare_found_missing_faces_2_optimized
+from compareFaceRecog_2 import compare_found_missing_faces_optimized,process_video_and_upload_faces,compare_found_missing_faces_all_optimized,compare_found_missing_faces_2_optimized
 import time
 
 app = Flask(__name__)
