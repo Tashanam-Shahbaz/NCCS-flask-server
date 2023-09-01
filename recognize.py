@@ -18,18 +18,18 @@ def url_to_image(url: str) -> Optional[np.ndarray]:
     except Exception as e:
         return None  # return None if an error occurs during image decoding
     
-def my_face_recognition(url_1: str, url_2: str) -> Tuple[bool, Union[int, float]]:
+def my_face_recognition(image, image_test):
     # Can use for local images
     # image = face_recognition.load_image_file(url_1)
     # image_test = face_recognition.load_image_file(url_2)
     
-    image = url_to_image(url_1)
-    image_test = url_to_image(url_2)
-    if (image is None) or (image_test is None):
-        return (False, 1)  
+    # image = url_to_image(url_1)
+    # image_test = url_to_image(url_2)
+    # if (image is None) or (image_test is None):
+    #     return (False, 1)  
     try:  # return if it doesnot found any faces in image.
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        faceloc = face_recognition.face_locations(image)[0]
+        # faceloc = face_recognition.face_locations(image)[0]
         encode = face_recognition.face_encodings(image)[0]
     except Exception as e:
         print(e)
@@ -38,7 +38,7 @@ def my_face_recognition(url_1: str, url_2: str) -> Tuple[bool, Union[int, float]
     #               (faceloc[1], faceloc[2]), (255, 0, 255), 2)
     try:
         image_test = cv2.cvtColor(image_test, cv2.COLOR_BGR2RGB)
-        faceLocTest = face_recognition.face_locations(image_test)[0]
+        # faceLocTest = face_recognition.face_locations(image_test)[0]
         encodeTest = face_recognition.face_encodings(image_test)[0]
     except Exception as e:
         print(e)

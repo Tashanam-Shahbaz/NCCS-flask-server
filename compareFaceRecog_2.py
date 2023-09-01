@@ -30,7 +30,11 @@ def compare_found_missing_faces_optimized(found_id):
         for imgPath in data_child_found['imagePath']: 
             image_url_1 = bucket.blob(imgPath).generate_signed_url(
                         timedelta(seconds=10000), method='GET')
-
+            
+            image_array=url_to_image(image_url_1)
+            if image_array is None:
+                print("image_array",imgPath,image_url_1)
+                continue
             results = []
             for child_missing_id, data_child_missing in data_childern_missing.items():
                 # print("data_child_missing",data_child_missing)
@@ -38,10 +42,15 @@ def compare_found_missing_faces_optimized(found_id):
                     for path in data_child_missing['imagePath']:
                         image_url_2 = bucket.blob(path).generate_signed_url(
                                     timedelta(seconds=10000), method='GET')
-                        predicted=my_face_recognition(image_url_1,image_url_2)
+                        image_array_2=url_to_image(image_url_2)
+                        if image_array_2 is None:
+                            print("image_array_2",imgPath,image_url_2)
+                            continue
+                        
+                        predicted=my_face_recognition(image_array,image_array_2)
                         results.append((child_missing_id,image_url_2, predicted[0],predicted[1]))
 
-            results = filter(lambda x: x[2], results)
+            results = list(filter(lambda x: x[2], results))
             results.sort(key=lambda x: x[3])
             
             if results ==[]:
