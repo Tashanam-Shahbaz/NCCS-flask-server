@@ -7,7 +7,7 @@ from firebase_admin import initialize_app,credentials,storage, db
 from saimeseNetwork import siamese_model
 from supportFunc import url_to_image,preprocess_image,saimese_pairs,face_capture_from_video
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from compareFaceRecog_2 import my_face_recognition
+from recognize import my_face_recognition
 
 cred = credentials.Certificate("./firebaseConnection/zainab-alert025-key.json")
 firebase_app = initialize_app(
