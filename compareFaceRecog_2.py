@@ -52,7 +52,7 @@ def compare_found_missing_faces_optimized(found_id):
 
             results = list(filter(lambda x: x[2], results))
             results.sort(key=lambda x: x[3])
-            
+            print("RESSULT_CHECK",results)
             if results ==[]:
                 # data_child_found["images_path"] = [image_url_1]
                 # dic["ChildFound"].append({found_id: data_child_found})
@@ -60,8 +60,8 @@ def compare_found_missing_faces_optimized(found_id):
                 return dic
 
             
-            print("RESULT ",results)
-            for i in range(3):
+            # print("RESULT ",results)
+            for i in range(1):
                 missing_id = results[i][0]
                 data_child_missing = data_childern_missing[missing_id]
                 data_child_missing["images_path"] = [results[i][1]]
@@ -149,7 +149,7 @@ def compare_found_missing_faces_all_optimized():
 
                 results = []
                 for child_missing_id, data_child_missing in data_childern_missing.items():
-                    print("data_child_missing",data_child_missing)
+                    # print("data_child_missing",data_child_missing)
                     if 'imagePath' in data_child_missing:
                         for path in data_child_missing['imagePath']:
                             image_url_2 = bucket.blob(path).generate_signed_url(
@@ -167,7 +167,7 @@ def compare_found_missing_faces_all_optimized():
                     # data_child_found["images_path"] = [image_url_1]
                     # dic["ChildFound"].append({found_id: data_child_found})
                     print("No Match Found.\nResult",results)
-                    return dic
+                    continue
 
                 for i in range(3):
                     missing_id = results[i][0]
