@@ -92,10 +92,7 @@ def compare_found_missing_faces_2_optimized(missing_id):
             if image_array is None:
                 print("image_array",imgPath,image_url_1)
                 continue
-            preprocess_image_array = preprocess_image(image_array)
-            if preprocess_image_array is None:
-                print("preprocess_image_array",preprocess_image_array)
-                continue
+
             results = []
             for child_found_id, data_child_found in data_childern_found.items():
                 print("data_child_found",data_child_found)
@@ -104,22 +101,21 @@ def compare_found_missing_faces_2_optimized(missing_id):
                         image_url_2 = bucket.blob(path).generate_signed_url(
                                     timedelta(seconds=10000), method='GET')
 
-                        pairs = saimese_pairs(image_url_2)
-                        if pairs is None:
-                            print("pairs",pairs)  
+                        image_array_2=url_to_image(image_url_2)
+                        if image_array_2 is None:
+                            print("image_array_2",imgPath,image_url_2)
                             continue
-                        
-                        pairs[0][0, :, :, :] = preprocess_image_array
+                        predicted=my_face_recognition(image_array,image_array_2)
+                        results.append((child_found_id,image_url_2, predicted[0],predicted[1]))
 
-                        dist = main_model.predict([pairs[0], pairs[1]])[0][0]
-                        results.append((child_found_id,image_url_2, dist))
-
-            results.sort(key=lambda x: x[2])   
-            if results[0][2]>0.1:
-                # data_child_missing["images_path"] = [image_url_1]
-                # dic["ChildFound"].append({missing_id: data_child_missing})
+            results = list(filter(lambda x: x[2], results))
+            results.sort(key=lambda x: x[3]) 
+            if results ==[]:
+                # data_child_found["images_path"] = [image_url_1]
+                # dic["ChildFound"].append({found_id: data_child_found})
                 print("No Match Found.\nResult",results)
                 return dic
+
             print("RESULT ",results)
             for i in range(3):
                 found_id = results[i][0]
@@ -150,10 +146,7 @@ def compare_found_missing_faces_all_optimized():
                 image_array = url_to_image(image_url_1)
                 if image_array is None:
                     continue
-                preprocess_image_array = preprocess_image(image_array)
-                if preprocess_image_array is None:
-                    continue
-                
+
                 results = []
                 for child_missing_id, data_child_missing in data_childern_missing.items():
                     print("data_child_missing",data_child_missing)
@@ -161,18 +154,20 @@ def compare_found_missing_faces_all_optimized():
                         for path in data_child_missing['imagePath']:
                             image_url_2 = bucket.blob(path).generate_signed_url(
                                         timedelta(seconds=10000), method='GET')
-
-                            pairs = saimese_pairs(image_url_2)
-                            if pairs is None:
+                            image_array_2=url_to_image(image_url_2)
+                            if image_array_2 is None:
+                                print("image_array_2",imgPath,image_url_2)
                                 continue
-                            pairs[0][0, :, :, :] = preprocess_image_array
-
-                            dist = main_model.predict([pairs[0], pairs[1]])[0][0]
-                            results.append((child_missing_id,image_url_2, dist))
+                            predicted=my_face_recognition(image_array,image_array_2)
+                            results.append((child_missing_id,image_url_2, predicted[0],predicted[1]))
                     
-                results.sort(key=lambda x: x[2])
-                if results[0][2]>0.15:
-                    continue
+                results = list(filter(lambda x: x[2], results))
+                results.sort(key=lambda x: x[3]) 
+                if results ==[]:
+                    # data_child_found["images_path"] = [image_url_1]
+                    # dic["ChildFound"].append({found_id: data_child_found})
+                    print("No Match Found.\nResult",results)
+                    return dic
 
                 for i in range(3):
                     missing_id = results[i][0]
